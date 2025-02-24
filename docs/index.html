@@ -8,19 +8,25 @@
 
 </head>
 <body>
-    <div id="dialog" class="fixed inset-0 flex justify-center items-center bg-black bg-opacity-30 opacity-0 invisible transition-opacity duration-500">
+    <div id="dialog" class="fixed inset-0 flex justify-center items-center bg-black bg-opacity-30 opacity-0 invisible transition-opacity duration-500 z-50">
         <div id="dialog-box" class="bg-white p-5 rounded-lg shadow-lg w-64 text-center relative scale-90 transition-transform duration-300">
             <!-- 닫기 버튼 -->
             <button onclick="hideDialog()" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700">
                 ✕
             </button>
             <!-- 체크 아이콘 -->
-            <div class="flex items-center justify-center rounded-lg px-2 py-1 mb-3">
+            <div id="alert-success" class="flex items-center justify-center rounded-lg px-2 py-1 mb-3">
                 <svg class="w-10 h-10 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
                 </svg>
             </div>
-            <p class="text-gray-700 text-lg font-semibold">완료되었습니다</p>
+            <div id="alert-fail" class="flex items-center justify-center rounded-lg px-2 py-1 mb-3 hidden">
+                <!-- X 아이콘 -->
+                <svg class="w-10 h-10 text-red-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </div>
+            <p id="alert-text" class="text-gray-700 text-lg font-semibold">완료되었습니다</p>
         </div>
     </div>
 
@@ -41,9 +47,9 @@
         </h2>
         <p class="text-gray-600 mt-4 px-2">GTD의 체계적인 정리 방식과 뽀모도로의 집중력을 결합한 혁신적인 시간 관리 도구!</p>
         <div class="mt-6 flex justify-center px-4">
-            <input type="email" placeholder="이메일을 입력하세요" 
+            <input type="email" placeholder="이메일을 입력하세요" id="email-1"
                 class="border border-gray-300 px-4 py-2 rounded-l-lg !rounded-r-none w-64 focus:outline-none focus:ring-2 focus:ring-blue-500">
-            <button class="bg-blue-500 text-white px-2 py-2 rounded-r-lg sm:px-4" onclick="showDialog()">알림 받기</button>
+            <button class="submit-btn bg-blue-500 text-white px-2 py-2 rounded-r-lg sm:px-4" onclick="inputEmail()">알림 받기</button>
         </div>
     </main>
     
@@ -72,7 +78,7 @@
         </div>
     </section>
 
-    <section id="preview" class="w-full max-w-4xl text-center py-12">
+    <section id="preview" class="w-full max-w-4xl text-center py-12 z-10">
         <h2 id='carousel-heading' class="text-2xl font-bold">직관적인 대시보드로 생산성을 높이세요</h2>
         <div class="relative mt-6">
             <div class="relative w-full mx-w-4xl overflow-hidden rounded-lg shadow-lg">
@@ -107,9 +113,9 @@
         <h2 class="text-2xl font-bold">지금 바로 시작하세요!</h2>
         <p class="mt-2">GTD와 뽀모도로의 완벽한 조화를 경험해보세요. 얼리 액세스 신청하고 특별한 혜택을 받아보세요.</p>
         <div class="mt-6 flex justify-center">
-            <input type="email" placeholder="이메일을 입력하세요" 
+            <input type="email" placeholder="이메일을 입력하세요" id="email-2"
                 class="border border-gray-300 px-4 py-2 rounded-l-lg !rounded-r-none w-64 focus:outline-none focus:ring-2 focus:ring-blue-300 text-black">
-            <button class="bg-white text-blue-500 px-1 py-2 rounded-r-lg sm:px-4">알림 받기</button>
+            <button class="submit-btn bg-white text-blue-500 px-1 py-2 rounded-r-lg sm:px-4">알림 받기</button>
         </div>
         </div>
     </section>
@@ -155,7 +161,7 @@
         images.style.transform = `translateX(-${currentIndex * 100}%)`;
         heading.textContent = headings[currentIndex];
         document.querySelectorAll('.indicator').forEach((dot, index) => {
-            dot.classList.toggle('bg-white', index === currentIndex);
+            dot.classList.toggle('bg-blue-500', index === currentIndex);
             dot.classList.toggle('bg-gray-400', index !== currentIndex);
         });
     }
@@ -173,7 +179,7 @@
     function createIndicators() {
         for (let i = 0; i < slides.length; i++) {
             const dot = document.createElement('div');
-            dot.classList.add('w-3', 'h-3', 'rounded-full', 'cursor-pointer', 'indicator', i === 0 ? 'bg-white' : 'bg-gray-400');
+            dot.classList.add('w-3', 'h-3', 'rounded-full', 'cursor-pointer', 'indicator', i === 0 ? 'bg-blue-500' : 'bg-gray-400');
             dot.addEventListener('click', () => {
                 currentIndex = i;
                 updateCarousel();
@@ -187,7 +193,18 @@
     createIndicators();
     setInterval(nextSlide, 5000);
 
-    function showDialog() {
+    function showDialog(text, success=true) {
+
+        if (success) {
+            document.getElementById("alert-success").classList.remove("hidden");
+            document.getElementById("alert-fail").classList.add("hidden");
+            document.getElementById("alert-text").textContent = text || "완료되었습니다";
+        } else {
+            document.getElementById("alert-success").classList.add("hidden");
+            document.getElementById("alert-fail").classList.remove("hidden");
+            document.getElementById("alert-text").textContent = text || "오류가 발생했습니다";
+        }
+
         const dialog = document.getElementById("dialog");
         const dialogBox = document.getElementById("dialog-box");
         
@@ -220,10 +237,28 @@
     function scrollToCarousel() {
         document.getElementById("preview").scrollIntoView({ behavior: "smooth" });
     }
+
+
+    let value = '';
+    // document ready
+    document.addEventListener('DOMContentLoaded', function() {
+        const email1 = document.getElementById('email-1');
+        const email2 = document.getElementById('email-2');
+        email1.addEventListener('input', function(e) {
+            value = e.target.value;
+            email2.value = value;
+        });
+        email2.addEventListener('input', function(e) {
+            value = e.target.value;
+            email1.value = value;
+        });
+    });
+
 </script>
 <script type="module">
     // Import the functions you need from the SDKs you need
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
+    import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-database.js";
     // TODO: Add SDKs for Firebase products that you want to use
     // https://firebase.google.com/docs/web/setup#available-libraries
   
@@ -239,5 +274,57 @@
   
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
+
+
+    const database = getDatabase(app); // Firebase 데이터베이스 초기화
+
+    const inputEmail = () => {
+        if (!database) {
+            console.error("Firebase is not initialized yet!");
+            return;
+        }
+
+        const emailValue = value;
+
+        if (!emailValue || emailValue.trim() === "") {
+            console.error("Email field is empty!");
+            showDialog("이메일을 입력하세요.", false);
+            return;
+        }
+
+        const emailRef = ref(database, 'emails'); // 'emails' 노드 참조
+        const newEmailRef = push(emailRef); // 새 이메일을 위한 고유 키 생성
+
+        // 데이터 저장
+        set(newEmailRef, {
+            email: emailValue,
+            timestamp: Date.now()
+        })
+        .then(() => {
+            console.log("Email added successfully!");
+            showDialog("이메일이 성공적으로 추가되었습니다.", true);
+            value = '';
+            document.getElementById("email-1").value = ""; // 입력 필드 초기화
+            document.getElementById("email-2").value = ""; // 입력 필드 초기화
+        })
+        .catch((error) => {
+            console.error("Error adding email:", error);
+            showDialog("이메일 추가 중 오류가 발생했습니다.", false);
+        });
+    };
+
+    document.getElementsByClassName('submit-btn')[0].addEventListener('click', inputEmail);
+    document.getElementsByClassName('submit-btn')[1].addEventListener('click', inputEmail);
+    document.getElementById('email-1').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            inputEmail();
+        }
+    });
+    document.getElementById('email-2').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            inputEmail();
+        }
+    });
+
   </script>
 </html>

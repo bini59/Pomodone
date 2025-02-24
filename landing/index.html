@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+<body>
+    <div id="dialog" class="fixed inset-0 flex justify-center items-center bg-black bg-opacity-30 opacity-0 invisible transition-opacity duration-500">
+        <div id="dialog-box" class="bg-white p-5 rounded-lg shadow-lg w-64 text-center relative scale-90 transition-transform duration-300">
+            <!-- 닫기 버튼 -->
+            <button onclick="hideDialog()" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700">
+                ✕
+            </button>
+            <!-- 체크 아이콘 -->
+            <div class="flex items-center justify-center rounded-lg px-2 py-1 mb-3">
+                <svg class="w-10 h-10 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+                </svg>
+            </div>
+            <p class="text-gray-700 text-lg font-semibold">완료되었습니다</p>
+        </div>
+    </div>
+
+
+    <div class="min-h-screen flex flex-col items-center justify-center bg-white text-black">
+    <header class="w-full max-w-4xl flex justify-between items-center py-4 px-6">
+        <h1 class="text-xl font-bold flex items-center gap-2">
+            <span class="text-blue-500">&#128337;</span> PomoDone
+        </h1>
+        <button class="bg-blue-500 text-white px-4 py-2 rounded-lg" onclick="scrollToCarousel()">시작하기</button>
+    </header>
+    
+    <main class="w-full max-w-4xl text-center py-12">
+        <h2 class="text-3xl font-bold sm:inline-block block">
+            <span>GTD x 뽀모도로</span>
+            <span class="sm:inline hidden">- 최고의 생산성 도구!</span>
+            <span class="block sm:hidden">최고의 생산성 도구!</span>
+        </h2>
+        <p class="text-gray-600 mt-4 px-2">GTD의 체계적인 정리 방식과 뽀모도로의 집중력을 결합한 혁신적인 시간 관리 도구!</p>
+        <div class="mt-6 flex justify-center px-4">
+            <input type="email" placeholder="이메일을 입력하세요" 
+                class="border border-gray-300 px-4 py-2 rounded-l-lg !rounded-r-none w-64 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <button class="bg-blue-500 text-white px-2 py-2 rounded-r-lg sm:px-4" onclick="showDialog()">알림 받기</button>
+        </div>
+    </main>
+    
+    <section class="w-full py-12 bg-[#F9FAFB]">
+        <div class="w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-6 mx-auto">
+        <div class="text-left px-6">
+            <h3 class="font-bold text-lg flex items-center gap-2">
+                <span class="text-blue-500">&#128221;</span> GTD는 이렇게 도움을 줍니다
+            </h3>
+            <ul class="mt-4 space-y-2 text-gray-700">
+                <li>&#10003; 체계적인 할 일 정리</li>
+                <li>&#10003; 우선순위 관리</li>
+                <li>&#10003; 프로젝트 세분화</li>
+            </ul>
+        </div>
+        <div class="text-left px-6">
+            <h3 class="font-bold text-lg flex items-center gap-2">
+                <span class="text-blue-500">&#9200;</span> 뽀모도로는 이렇게 집중력을 높여줍니다
+            </h3>
+            <ul class="mt-4 space-y-2 text-gray-700">
+                <li>&#10003; 25분 집중 세션</li>
+                <li>&#10003; 효율적인 휴식 관리</li>
+                <li>&#10003; 작업 흐름 최적화</li>
+            </ul>
+        </div>
+        </div>
+    </section>
+
+    <section id="preview" class="w-full max-w-4xl text-center py-12">
+        <h2 id='carousel-heading' class="text-2xl font-bold">직관적인 대시보드로 생산성을 높이세요</h2>
+        <div class="relative mt-6">
+            <div class="relative w-full mx-w-4xl overflow-hidden rounded-lg shadow-lg">
+                <div class="flex transition-transform duration-500 ease-in-out" id="carousel">
+                    <img src="img/pomo_pre_1.png" alt="Slide 1" class="w-full flex-shrink-0">
+                    <img src="img/pomo_pre_2.png" alt="Slide 2" class="w-full flex-shrink-0">
+                    <img src="img/pomo_pre_3.png" alt="Slide 3" class="w-full flex-shrink-0">
+                    <img src="img/pomo_pre_4.png" alt="Slide 3" class="w-full flex-shrink-0">
+                    <img src="img/pomo_pre_5.png" alt="Slide 3" class="w-full flex-shrink-0">
+                    <img src="img/pomo_pre_6.png" alt="Slide 3" class="w-full flex-shrink-0">
+                    <img src="img/pomo_pre_7.png" alt="Slide 3" class="w-full flex-shrink-0">
+                    <img src="img/pomo_pre_8.png" alt="Slide 3" class="w-full flex-shrink-0">
+                </div>
+                
+                <!-- Prev Button -->
+                <button id="prev" class="absolute top-1/2 left-2 transform -translate-y-1/2 bg-black/50 text-white rounded-full p-2">
+                    &#10094;
+                </button>
+                
+                <!-- Next Button -->
+                <button id="next" class="absolute top-1/2 right-2 transform -translate-y-1/2 bg-black/50 text-white rounded-full p-2">
+                    &#10095;
+                </button>
+                
+                <!-- Indicators -->
+                <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2" id="indicators"></div>
+            </div>
+        </div>
+    </section>
+    <section class="w-full text-center py-12 bg-blue-500 text-white">
+        <div class="max-w-4xl mx-auto px-6"> 
+        <h2 class="text-2xl font-bold">지금 바로 시작하세요!</h2>
+        <p class="mt-2">GTD와 뽀모도로의 완벽한 조화를 경험해보세요. 얼리 액세스 신청하고 특별한 혜택을 받아보세요.</p>
+        <div class="mt-6 flex justify-center">
+            <input type="email" placeholder="이메일을 입력하세요" 
+                class="border border-gray-300 px-4 py-2 rounded-l-lg !rounded-r-none w-64 focus:outline-none focus:ring-2 focus:ring-blue-300 text-black">
+            <button class="bg-white text-blue-500 px-1 py-2 rounded-r-lg sm:px-4">알림 받기</button>
+        </div>
+        </div>
+    </section>
+    
+    <footer class="w-full text-center py-6 bg-gray-100 mt-12">
+        <div class="flex justify-center space-x-4">
+            <span class="text-blue-500 text-xl">&#128337;</span>
+            <span class="text-xl font-bold">PomoDone</span>
+        </div>
+        <p class="mt-2 text-gray-500">© 2025 PomoDone. All rights reserved.</p>
+        <div class="flex justify-center space-x-4 mt-4">
+            <span class="text-gray-600 text-xl">&#x1F426;</span>
+            <span class="text-gray-600 text-xl">&#x1F464;</span>
+            <span class="text-gray-600 text-xl">&#x1F4F7;</span>
+        </div>
+    </footer>
+</div>
+
+</body>
+
+<script>
+    const images = document.getElementById("carousel");
+    const prevButton = document.getElementById("prev");
+    const nextButton = document.getElementById("next");
+    const indicatorsContainer = document.getElementById("indicators");
+    const heading = document.getElementById("carousel-heading");
+    const slides = images.children;
+    let currentIndex = 0;
+
+    const headings = [
+        "직관적인 대시보드로 생산성을 높이세요",
+        "효율적인 업무 관리가 가능합니다",
+        "시각적으로 데이터를 분석하세요",
+        "사용자 친화적인 인터페이스를 제공합니다",
+        "맞춤 설정으로 더욱 편리하게",
+        "팀워크를 극대화하세요",
+        "업무 흐름을 쉽게 파악하세요",
+        "스마트한 일정 관리 기능 포함"
+    ];
+
+
+    function updateCarousel() {
+        images.style.transform = `translateX(-${currentIndex * 100}%)`;
+        heading.textContent = headings[currentIndex];
+        document.querySelectorAll('.indicator').forEach((dot, index) => {
+            dot.classList.toggle('bg-white', index === currentIndex);
+            dot.classList.toggle('bg-gray-400', index !== currentIndex);
+        });
+    }
+
+    function nextSlide() {
+        currentIndex = (currentIndex + 1) % slides.length;
+        updateCarousel();
+    }
+
+    function prevSlide() {
+        currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+        updateCarousel();
+    }
+
+    function createIndicators() {
+        for (let i = 0; i < slides.length; i++) {
+            const dot = document.createElement('div');
+            dot.classList.add('w-3', 'h-3', 'rounded-full', 'cursor-pointer', 'indicator', i === 0 ? 'bg-white' : 'bg-gray-400');
+            dot.addEventListener('click', () => {
+                currentIndex = i;
+                updateCarousel();
+            });
+            indicatorsContainer.appendChild(dot);
+        }
+    }
+
+    prevButton.addEventListener('click', prevSlide);
+    nextButton.addEventListener('click', nextSlide);
+    createIndicators();
+    setInterval(nextSlide, 5000);
+
+    function showDialog() {
+        const dialog = document.getElementById("dialog");
+        const dialogBox = document.getElementById("dialog-box");
+        
+        dialog.classList.remove("opacity-0", "invisible");
+        dialog.classList.add("opacity-100", "visible");
+        
+        dialogBox.classList.remove("scale-90");
+        dialogBox.classList.add("scale-100");
+
+        // 1.5초 후 서서히 사라짐
+        setTimeout(hideDialog, 1500);
+    }
+
+    function hideDialog() {
+        const dialog = document.getElementById("dialog");
+        const dialogBox = document.getElementById("dialog-box");
+
+        dialog.classList.remove("opacity-100");
+        dialog.classList.add("opacity-0");
+
+        dialogBox.classList.remove("scale-100");
+        dialogBox.classList.add("scale-90");
+
+        // 애니메이션이 끝난 후 완전히 숨기기 (0.5초 후)
+        setTimeout(() => {
+            dialog.classList.add("invisible");
+        }, 500);
+    }
+
+    function scrollToCarousel() {
+        document.getElementById("preview").scrollIntoView({ behavior: "smooth" });
+    }
+</script>
+<script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+  
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyA8oIaNjVz64XTjvPOkMj5yrvX64tEQGpM",
+      authDomain: "iotproject-532c6.firebaseapp.com",
+      projectId: "iotproject-532c6",
+      storageBucket: "iotproject-532c6.firebasestorage.app",
+      messagingSenderId: "824594004892",
+      appId: "1:824594004892:web:dbe0d7945c6c93646ba659"
+    };
+  
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+  </script>
+</html>
